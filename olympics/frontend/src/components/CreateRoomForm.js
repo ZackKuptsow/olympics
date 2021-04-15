@@ -9,13 +9,16 @@ export default class CreateRoomForm extends Component {
 		super(props);
 		this.state = {
 			playerCanPause: true,
-			votesToSkip: this.defaultVotes
+			votesToSkip: this.defaultVotes,
+			control1Checked: true,
+			control2Checked: false
 		};
 		this.handleVotesChange = this.handleVotesChange.bind(this);
 		this.handlePlayerCanPauseChange = this.handlePlayerCanPauseChange.bind(
 			this
 		);
 		this.handleNextButtonPressed = this.handleNextButtonPressed.bind(this);
+		this.toggleRadio = this.toggleRadio.bind(this);
 	}
 
 	handleVotesChange(e) {
@@ -27,6 +30,13 @@ export default class CreateRoomForm extends Component {
 	handlePlayerCanPauseChange(e) {
 		this.setState({
 			playerCanPause: e.target.value === 'true' ? true : false
+		});
+	}
+
+	toggleRadio() {
+		this.setState({
+			control1Checked: !this.control1Checked,
+			control2Checked: !this.control2Checked
 		});
 	}
 
@@ -65,6 +75,8 @@ export default class CreateRoomForm extends Component {
 						name="playerControlOptions"
 						id="control1"
 						value="true"
+						checked={this.state.control1Checked}
+						onChange={this.toggleRadio}
 					/>
 					<label htmlFor="control1" className="form-check-label">
 						Play/Pause
@@ -75,6 +87,8 @@ export default class CreateRoomForm extends Component {
 						name="playerControlOptions"
 						id="control2"
 						value="false"
+						checked={this.state.control2Checked}
+						onChange={this.toggleRadio}
 					/>
 					<label htmlFor="control2" className="form-check-label">
 						No Control

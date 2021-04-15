@@ -6,6 +6,7 @@ import TableCard from './TableCard';
 import SpotifyControllerCard from './SpotifyControllerCard';
 import SpotifyQueueCard from './SpotifyQueueCard';
 import AdminCard from './AdminCard';
+import AdminPage from './AdminPage';
 
 export default class Room extends Component {
 	constructor(props) {
@@ -13,10 +14,19 @@ export default class Room extends Component {
 		this.state = {
 			votesToSkip: 2,
 			playerCanPause: false,
-			isHost: false
+			isHost: false,
+			openSettings: false
 		};
+		this.handler = this.handler.bind(this);
 		this.roomCode = this.props.match.params.roomCode;
 		this.getRoomDetails();
+		this.renderCards = this.renderCards.bind(this);
+	}
+
+	handler() {
+		this.setState({
+			openSettings: !this.state.openSettings
+		});
 	}
 
 	getRoomDetails() {
@@ -31,31 +41,57 @@ export default class Room extends Component {
 			});
 	}
 
+	renderCards() {
+		return (
+			<Container>
+				<Row
+					md={1}
+					lg={2}
+					xl={3}
+					className="text-md-center justify-content-md-center justify-content-lg-between m-auto"
+				>
+					<Col>
+						<TeamCard className="m-auto" {...this.props} />
+					</Col>
+					<Col>
+						<BracketCard className="m-auto" {...this.props} />
+					</Col>
+					<Col>
+						<TableCard className="m-auto" {...this.props} />
+					</Col>
+					<Col>
+						<SpotifyControllerCard
+							className="m-auto"
+							{...this.props}
+						/>
+					</Col>
+					<Col>
+						<SpotifyQueueCard className="m-auto" {...this.props} />
+					</Col>
+					<Col>
+						<AdminCard
+							className="m-auto"
+							{...this.props}
+							handler={this.handler}
+						/>
+					</Col>
+				</Row>
+			</Container>
+		);
+	}
+
 	render() {
 		return (
 			<Container>
-				<Row>
-					<Col>
-						<TeamCard md={4} {...this.props} />
-					</Col>
-					<Col>
-						<BracketCard md={4} {...this.props} />
-					</Col>
-					<Col>
-						<TableCard md={4} {...this.props} />
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<SpotifyControllerCard md={4} {...this.props} />
-					</Col>
-					<Col>
-						<SpotifyQueueCard md={4} {...this.props} />
-					</Col>
-					<Col>
-						<AdminCard xs={12} md={4} {...this.props} />
-					</Col>
-				</Row>
+				{this.state.openSettings ? (
+					<AdminPage
+						handler={this.handler}
+						{...this.props}
+						updateCallback={this.getRoomDetails}
+					/>
+				) : (
+					this.renderCards()
+				)}
 			</Container>
 		);
 	}

@@ -25,7 +25,7 @@ export default class SpotifyQueueCard extends Component {
 		return (
 			<Card
 				className="text-center p-5"
-				style={{ width: '18rem', height: '18rem' }}
+				style={{ width: '24rem', height: '24rem' }}
 			>
 				<Card.Title>Spotify Queue</Card.Title>
 			</Card>

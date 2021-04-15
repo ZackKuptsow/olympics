@@ -29,7 +29,7 @@ export default class SpotifyControllerCard extends Component {
 		return (
 			<Card
 				className="text-center p-5"
-				style={{ width: '18rem', height: '18rem' }}
+				style={{ width: '24rem', height: '24rem' }}
 			>
 				<Card.Title>Spotify Controller</Card.Title>
 			</Card>
