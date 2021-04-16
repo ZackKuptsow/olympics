@@ -11,6 +11,7 @@ import JoinPage from './JoinPage';
 import CreatePage from './CreatePage';
 import Room from './Room';
 import TeamPage from './TeamPage';
+import BracketPage from './BracketPage';
 
 export default class HomePage extends Component {
 	constructor(props) {
@@ -64,6 +65,10 @@ export default class HomePage extends Component {
 			<Router>
 				<Switch>
 					<Route path="/room/:roomCode/teams" component={TeamPage} />
+					<Route
+						path="/room/:roomCode/brackets"
+						component={BracketPage}
+					/>
 					<Route
 						exact
 						path="/"

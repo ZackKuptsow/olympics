@@ -5,11 +5,17 @@ export default class TeamPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isHost: false
+			isHost: false,
+			teamNames: [],
+			teamsAdded: false
 		};
 		this.roomCode = this.props.match.params.roomCode;
 		this.renderTeamSettings = this.renderTeamSettings.bind(this);
+		this.handleAddTeamPressed = this.handleAddTeamPressed.bind(this);
+		this.getTeamsList = this.getTeamsList.bind(this);
 		this.getRoomDetails();
+		this.getTeamsList();
+		this.teamNameInput = React.createRef();
 	}
 
 	getRoomDetails() {
@@ -24,6 +30,30 @@ export default class TeamPage extends Component {
 				this.setState({
 					isHost: data.is_host
 				});
+			});
+	}
+
+	handleAddTeamPressed() {
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				room_code: this.roomCode,
+				team_name: this.teamNameInput.current.value
+			})
+		};
+		fetch('/api/create-team', requestOptions)
+			.then(response => response.json())
+			.then(() => window.location.reload());
+	}
+
+	getTeamsList() {
+		fetch('/api/get-teams' + '?code=' + this.roomCode)
+			.then(response => response.json())
+			.then(data => {
+				for (let team in data) {
+					this.state.teamNames.push(data[team].team_name);
+				}
 			});
 	}
 
@@ -43,14 +73,16 @@ export default class TeamPage extends Component {
 								<Form.Control
 									type="text"
 									placeholder="Team Name"
+									ref={this.teamNameInput}
 								/>
 								<Button
+									as="input"
+									type="button"
 									variant="primary"
 									className="my-3"
-									type="submit"
-								>
-									Add
-								</Button>
+									value="Add"
+									onClick={this.handleAddTeamPressed}
+								/>
 							</Form.Group>
 						</Form>
 					</Card.Body>
@@ -68,6 +100,15 @@ export default class TeamPage extends Component {
 							<Card.Header>
 								<h1 className="text-center">Teams</h1>
 							</Card.Header>
+							<Card.Body>
+								<Card.Text>
+									<ul>
+										{this.state.teamNames.map(team => (
+											<li>{team}</li>
+										))}
+									</ul>
+								</Card.Text>
+							</Card.Body>
 						</Card>
 					</Col>
 					{this.state.isHost ? this.renderTeamSettings() : null}

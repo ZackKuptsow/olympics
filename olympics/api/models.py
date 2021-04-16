@@ -23,18 +23,33 @@ class Room(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=50, default='', unique=True)
+    # TODO: Use foreign key
+    room_code = models.CharField(max_length=6, default='')
+    team_name = models.CharField(max_length=50, default='', unique=True)
+    # score = models.IntegerField(default=0)
+
     # TODO: Function that makes list/appends to list of games played
     # games_played =
 
 
-class Game(models.Model):
-    table = models.CharField(max_length=12, default='', unique=True)
-    teams = Team.objects.all()
-    # TODO: Make function to create dictionary of scores --> {Team1: score1, Team2: score2}
-    # score =
+class Event(models.Model):
+    room_code = models.CharField(max_length=6, default='')
+    event_name = models.CharField(max_length=24, default='', unique=True)
+    team_a = models.CharField(max_length=50, default='')
+    team_b = models.CharField(max_length=50, default='')
+    team_c = models.CharField(max_length=50, default='')
+    team_d = models.CharField(max_length=50, default='')
+    winner_ab = models.CharField(max_length=50, default='')
+    winner_cd = models.CharField(max_length=50, default='')
+    event_winner = models.CharField(max_length=50, default='')
 
 
-class Bracket(models.Model):
-    event = models.CharField(max_length=24, default='', unique=True)
-    # TODO: {rounds: [match_id]} i.e. {Round1: [ABC123, 123ABC, etc.]}
+# class Game(models.Model):
+#     table = models.CharField(max_length=12, default='', unique=True)
+#     teams = Team.objects.all()
+#     # TODO: Make function to create dictionary of scores --> {Team1: score1, Team2: score2}
+#     # score =
+
+# class Bracket(models.Model):
+#     event = models.CharField(max_length=24, default='', unique=True)
+#     # TODO: {rounds: [match_id]} i.e. {Round1: [ABC123, 123ABC, etc.]}

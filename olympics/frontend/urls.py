@@ -7,5 +7,7 @@ urlpatterns = [
     path('create', index),
     path('room/<str:roomCode>', index),
     path('room/<str:roomCode>/settings', index),
-    path('room/<str:roomCode>/teams', index)
+    path('room/<str:roomCode>/teams', index),
+    path('room/<str:roomCode>/brackets', index),
+
 ]

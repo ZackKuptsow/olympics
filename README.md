@@ -9,4 +9,5 @@
     <li>Organize code (mostly React operations, router and components)</li>
     <li>Send sms to captain when court/field/table is ready/unoccupied</li>
     <li>More mobile friendly, possibly make a React Native app</li>
+    <li>Use mongo or firebase as database</li>
 </ul>

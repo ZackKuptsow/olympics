@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Navbar } from 'react-bootstrap';
 
 export default class BracketCard extends Component {
 	constructor(props) {
@@ -7,15 +7,20 @@ export default class BracketCard extends Component {
 		this.state = {
 			isHost: false
 		};
+		this.roomCode = this.props.match.params.roomCode;
 	}
 
 	render() {
 		return (
 			<Card
-				className="text-center p-5"
+				className="text-center"
 				style={{ width: '24rem', height: '24rem' }}
 			>
-				<Card.Title>Brackets</Card.Title>
+				<Navbar className="p-3" bg="dark" variant="dark">
+					<Navbar.Brand href={`/room/${this.roomCode}/brackets`}>
+						Brackets
+					</Navbar.Brand>
+				</Navbar>
 			</Card>
 		);
 	}
