@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import RoomSerializer, CreateRoomSerializer, UpdateRoomSerializer, CreateTeamSerializer, GetTeamsSerializer, CreateEventSerializer, GetRoundOneSerializer
+from .serializers import *
 from .models import Room, Team, Event
 
 # Create your views here.
@@ -208,8 +208,8 @@ class CreateEvent(APIView):
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetRoundOne(APIView):
-    serializer_class = GetRoundOneSerializer
+class GetEvent(APIView):
+    serializer_class = GetEventSerializer
     lookup_url_kwarg = 'room_code'
 
     def get(self, request, format=None):
@@ -218,8 +218,34 @@ class GetRoundOne(APIView):
             event = Event.objects.filter(room_code=room_code)
             # print(event.values())
             if len(event) > 0:
-                data = GetRoundOneSerializer(event, many=True).data
+                data = GetEventSerializer(event, many=True).data
                 # print(data)
                 return Response(data, status=status.HTTP_200_OK)
             return Response({'Event Not Found': 'Invalid Event Name.'}, status=status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Code parameter not found in request'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RoundOneWinner(APIView):
+    serializer_class = GetRoundOneWinnerSerializer
+
+    def patch(self, request, format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            event_name = serializer.data.get('event_name')
+            winner_ab = serializer.data.get('winner_ab')
+            winner_cd = serializer.data.get('winner_cd')
+            print(event_name, winner_ab, winner_cd)
+
+            queryset = Event.objects.filter(event_name=event_name)
+            event = queryset[0]
+            event.winner_ab = winner_ab
+            event.winner_cd = winner_cd
+            event.save(update_fields=['winner_ab', 'winner_cd'])
+            print(UpdateRoundOneWinnerSerializer(event).data)
+            return Response(UpdateRoundOneWinnerSerializer(event).data, status=status.HTTP_200_OK)
+
+        return Response({'Bad Request': 'Invalid Data...'}, status=status.HTTP_400_BAD_REQUEST)

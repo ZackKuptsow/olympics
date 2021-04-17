@@ -34,13 +34,13 @@ class Team(models.Model):
 
 class Event(models.Model):
     room_code = models.CharField(max_length=6, default='')
-    event_name = models.CharField(max_length=24, default='', unique=True)
+    event_name = models.CharField(max_length=24, default='', unique=False)
     team_a = models.CharField(max_length=50, default='')
     team_b = models.CharField(max_length=50, default='')
     team_c = models.CharField(max_length=50, default='')
     team_d = models.CharField(max_length=50, default='')
-    winner_ab = models.CharField(max_length=50, default='')
-    winner_cd = models.CharField(max_length=50, default='')
+    winner_ab = models.CharField(max_length=50, default='', blank=True)
+    winner_cd = models.CharField(max_length=50, default='', blank=True)
     event_winner = models.CharField(max_length=50, default='')
 
 

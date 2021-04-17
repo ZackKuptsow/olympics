@@ -44,8 +44,20 @@ class CreateEventSerializer(serializers.ModelSerializer):
                   'team_a', 'team_b', 'team_c', 'team_d')
 
 
-class GetRoundOneSerializer(serializers.ModelSerializer):
+class GetEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'room_code', 'event_name',
-                  'team_a', 'team_b', 'team_c', 'team_d')
+                  'team_a', 'team_b', 'team_c', 'team_d', 'winner_ab', 'winner_cd', 'event_winner')
+
+
+class GetRoundOneWinnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('event_name', 'winner_ab', 'winner_cd')
+
+
+class UpdateRoundOneWinnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('winner_ab', 'winner_cd')
